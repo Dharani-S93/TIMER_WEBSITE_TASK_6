@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stylish Timer</title>
+  <style>
+    body {
+      background: #0f2027;
+      background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .timer-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .time {
+      font-size: 64px;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .start { background-color: #28a745; color: white; }
+    .pause { background-color: #ffc107; color: black; }
+    .reset { background-color: #dc3545; color: white; }
+
+    .start:hover { background-color: #218838; }
+    .pause:hover { background-color: #e0a800; }
+    .reset:hover { background-color: #c82333; }
+  </style>
+</head>
+<body>
+
+<div class="timer-container">
+  <h1>Timer</h1>
+  <div class="time" id="display">00:00:00</div>
+  <div class="controls">
+    <button class="start" onclick="startTimer()">Start</button>
+    <button class="pause" onclick="pauseTimer()">Pause</button>
+    <button class="reset" onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+<script>
+  let [hours, minutes, seconds] = [0, 0, 0];
+  let display = document.getElementById("display");
+  let timer = null;
+
+  function updateDisplay() {
+    let h = hours < 10 ? "0" + hours : hours;
+    let m = minutes < 10 ? "0" + minutes : minutes;
+    let s = seconds < 10 ? "0" + seconds : seconds;
+    display.textContent = `${h}:${m}:${s}`;
+  }
+
+  function startTimer() {
+    if (timer !== null) return; // Prevent multiple intervals
+    timer = setInterval(() => {
+      seconds++;
+      if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes == 60) {
+          minutes = 0;
+          hours++;
+        }
+      }
+      updateDisplay();
+    }, 1000);
+  }
+
+  function pauseTimer() {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    [hours, minutes, seconds] = [0, 0, 0];
+    updateDisplay();
+    timer = null;
+  }
+</script>
+
+</body>
+</html>
